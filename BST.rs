@@ -1,5 +1,4 @@
- 
-use std::fmt::Display;
+use std::{collections::VecDeque, fmt::Display};
 
 
 struct Node<T: Display> {
@@ -51,6 +50,29 @@ impl<T: Display+PartialOrd> BST<T> {
         }
     }
 
+    fn BFS(&self){
+        Self::BFS_Search(&self.root);
+    }
+
+    fn BFS_Search(node: &Option<Box<Node<T>>>)
+    {
+        let mut queue: VecDeque<&Node<T>> = VecDeque::new();
+        if let Some(ref current_node) = node{
+            queue.push_back(&current_node);
+        }
+
+        while let  Some(current_node)= queue.pop_front() {
+            print!("{} ," ,current_node.data);
+
+            if let Some(ref left_node) = current_node.left{
+                queue.push_back(left_node);
+            }
+            if let Some(ref right_node) = current_node.right{
+                queue.push_back(right_node);
+            }
+        }
+    }
+
 }
 
 fn main(){
@@ -63,4 +85,7 @@ fn main(){
     root.insertion(20);
 
     root.print();
+    println!();
+    print!("BST of this tree :");
+    root.BFS();
 }
